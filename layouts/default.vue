@@ -47,18 +47,21 @@
       </v-btn>
       <v-menu v-if="isAuthenticated" offset-y>
         <template v-slot:activator="{ on, attrs }">
-          <v-avatar>
+          <v-avatar v-if="isAuthenticated && user.photoURL">
             <v-img
-              v-if="isAuthenticated"
               :src="user.photoURL"
               :alt="user.displayName"
               v-bind="attrs"
               v-on="on"
             />
           </v-avatar>
-          <v-btn v-if="isAuthenticated && !user.photoURL" text>{{
-            user.displayName
-          }}</v-btn>
+          <v-btn
+            v-if="isAuthenticated && !user.photoURL"
+            text
+            v-bind="attrs"
+            v-on="on"
+            >{{ user.displayName }}</v-btn
+          >
         </template>
         <v-list>
           <v-list-item

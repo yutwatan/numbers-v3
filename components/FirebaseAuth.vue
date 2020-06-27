@@ -21,13 +21,15 @@ export default {
             authProviders.Google,
             authProviders.Facebook,
             authProviders.Github,
+            /*
             {
               provider: authProviders.Phone,
               defaultCountry: 'JP'
             },
-            'apple.com',
-            'yahoo.com',
-            'microsoft.com'
+            */
+            // 'apple.com',
+            'yahoo.com'
+            // 'microsoft.com'
           ],
           callbacks: {
             /*
