@@ -37,7 +37,8 @@
 
     <v-app-bar :clipped-left="clipped" color="teal darken-1" fixed app dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
+      <v-divider vertical></v-divider>
+      <v-toolbar-title v-text="title" class="pl-3" />
 
       <v-spacer />
 
