@@ -44,9 +44,32 @@
       <v-btn text to="/help">
         <v-icon>mdi-help</v-icon>
       </v-btn>
-      <v-btn v-if="isAuthenticated" text>{{ user.displayName }}</v-btn>
+      <v-menu v-if="isAuthenticated" offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-avatar>
+            <v-img
+              v-if="isAuthenticated"
+              :src="user.photoURL"
+              :alt="user.displayName"
+              v-bind="attrs"
+              v-on="on"
+            />
+          </v-avatar>
+          <v-btn v-if="isAuthenticated && !user.photoURL" text>{{
+            user.displayName
+          }}</v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in profileItems"
+            :key="index"
+            @click="triggerClick(item.clickAction)"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-btn v-if="!isAuthenticated" text to="/login">ログイン</v-btn>
-      <v-btn v-if="isAuthenticated" text @click="logout">ログアウト</v-btn>
     </v-app-bar>
 
     <v-content>
@@ -68,7 +91,7 @@ export default {
   data() {
     return {
       clipped: true,
-      drawer: true,
+      drawer: false,
       fixed: false,
       items: [
         {
@@ -92,19 +115,35 @@ export default {
           to: '/help'
         }
       ],
+      profileItems: [
+        { title: 'ユーザ情報', clickAction: 'userInfo' },
+        { title: 'ログアウト', clickAction: 'logout' }
+      ],
       miniVariant: false,
       title: 'Numbers 可視化・分析ツール'
     };
   },
   computed: {
-    // ...mapState('auth', ['user']),
-    ...mapState('auth', {
-      user: (state) => state.user
-    }),
+    ...mapState('auth', ['user']),
     ...mapGetters('auth', ['isAuthenticated'])
   },
   methods: {
-    ...mapActions('auth', ['logout'])
+    ...mapActions('auth', {
+      logout: async (dispatch) => {
+        await dispatch('signOut');
+        console.log('ログアウト完了');
+      }
+    }),
+    triggerClick(action) {
+      if (action === 'userInfo') {
+        this.moveUserInfo();
+      } else if (action === 'logout') {
+        this.logout();
+      }
+    },
+    moveUserInfo() {
+      this.$router.push('/profile');
+    }
   }
 };
 </script>

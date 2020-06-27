@@ -3,7 +3,6 @@
 </template>
 
 <script>
-// import * as firebaseui from 'firebaseui';
 import { auth, authProviders } from '~/plugins/firebase';
 
 export default {
@@ -49,7 +48,11 @@ export default {
 
         ui.start('#firebaseui-auth-container', uiConfig);
       } else {
-        this.$router.push('/');
+        const routeName = this.$route.query.routeName;
+        if (routeName) {
+          const path = routeName === 'index' ? '' : routeName;
+          this.$router.push('/' + path);
+        }
       }
     });
   }

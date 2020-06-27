@@ -9,7 +9,7 @@ export const getters = {
 };
 
 export const actions = {
-  async logout({ commit }) {
+  async signOut({ commit }) {
     console.log('ログアウトします');
     await auth.signOut();
     commit('setUser', null);
