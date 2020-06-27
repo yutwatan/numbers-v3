@@ -14,7 +14,8 @@ export default function({ store, route, redirect }) {
           phoneNumber,
           photoURL,
           refreshToken,
-          displayName
+          displayName,
+          providerData
         } = user;
 
         store.dispatch('auth/setUser', {
@@ -25,7 +26,8 @@ export default function({ store, route, redirect }) {
           phoneNumber,
           photoURL,
           refreshToken,
-          displayName
+          displayName,
+          providerData
         });
 
         if (route.name === 'login') {
