@@ -19,5 +19,14 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
+    'no-console': 'off',
+    'quotes': [
+      'error',
+      'single'
+    ],
+    'semi': [
+      'error',
+      'always'
+    ]
   }
 }

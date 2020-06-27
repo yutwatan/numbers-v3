@@ -1,4 +1,4 @@
-import colors from 'vuetify/es5/util/colors'
+import colors from 'vuetify/es5/util/colors';
 
 export default {
   mode: 'universal',
@@ -22,15 +22,21 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: { color: '#00f' },
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['firebaseui/dist/firebaseui.css'],
   /*
    ** Plugins to load before mounting the App
    */
   plugins: [],
+  /*
+   *+ ルーティングカスタマイズ
+   */
+  router: {
+    middleware: ['authenticated']
+  },
   /*
    ** Nuxt.js dev-modules
    */
@@ -59,7 +65,8 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
+      light: true,
       themes: {
         dark: {
           primary: colors.blue.darken2,
@@ -69,6 +76,16 @@ export default {
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
+        },
+        light: {
+          primary: colors.teal.base,
+          secondary: colors.green.base,
+          accent: colors.blue.base,
+          error: colors.red.base,
+          warning: colors.lime.base,
+          info: '#607d8b',
+          success: colors.cyan.base,
+          anchor: colors.blue.base
         }
       }
     }
@@ -82,4 +99,4 @@ export default {
      */
     extend(config, ctx) {}
   }
-}
+};

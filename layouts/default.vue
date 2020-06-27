@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -7,7 +7,7 @@
       fixed
       app
     >
-      <v-list>
+      <v-list nav>
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
@@ -23,71 +23,127 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <template v-slot:append>
+        <v-divider></v-divider>
+        <div class="pa-2">
+          <v-btn icon @click.stop="miniVariant = !miniVariant">
+            <v-icon
+              >mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon
+            >
+          </v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
+
+    <v-app-bar :clipped-left="clipped" color="teal darken-1" fixed app dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
       <v-toolbar-title v-text="title" />
+
       <v-spacer />
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
+
+      <v-btn text to="/help">
+        <v-icon>mdi-help</v-icon>
       </v-btn>
+      <v-menu v-if="isAuthenticated" offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-avatar>
+            <v-img
+              v-if="isAuthenticated"
+              :src="user.photoURL"
+              :alt="user.displayName"
+              v-bind="attrs"
+              v-on="on"
+            />
+          </v-avatar>
+          <v-btn v-if="isAuthenticated && !user.photoURL" text>{{
+            user.displayName
+          }}</v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in profileItems"
+            :key="index"
+            @click="triggerClick(item.clickAction)"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <v-btn v-if="!isAuthenticated" text to="/login">ログイン</v-btn>
     </v-app-bar>
+
     <v-content>
       <v-container>
         <nuxt />
       </v-container>
     </v-content>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+
+    <v-footer :fixed="fixed" color="primary" app dark>
+      <span>&copy; {{ new Date().getFullYear() }} yutwatan</span>
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from 'vuex';
+
 export default {
   data() {
     return {
-      clipped: false,
+      clipped: true,
       drawer: false,
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
+          icon: 'mdi-home',
+          title: 'Dashboard',
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          icon: 'mdi-numeric-3-box-multiple',
+          title: 'Numbers 3',
+          to: '/numbers3'
+        },
+        {
+          icon: 'mdi-numeric-4-box-multiple',
+          title: 'Numbers 4',
+          to: '/numbers4'
+        },
+        {
+          icon: 'mdi-help',
+          title: 'Help',
+          to: '/help'
         }
       ],
+      profileItems: [
+        { title: 'ユーザ情報', clickAction: 'userInfo' },
+        { title: 'ログアウト', clickAction: 'logout' }
+      ],
       miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
+      title: 'Numbers 可視化・分析ツール'
+    };
+  },
+  computed: {
+    ...mapState('auth', ['user']),
+    ...mapGetters('auth', ['isAuthenticated'])
+  },
+  methods: {
+    ...mapActions('auth', {
+      logout: async (dispatch) => {
+        await dispatch('signOut');
+        console.log('ログアウト完了');
+      }
+    }),
+    triggerClick(action) {
+      if (action === 'userInfo') {
+        this.moveUserInfo();
+      } else if (action === 'logout') {
+        this.logout();
+      }
+    },
+    moveUserInfo() {
+      this.$router.push('/profile');
     }
   }
-}
+};
 </script>
