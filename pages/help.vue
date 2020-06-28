@@ -1,7 +1,5 @@
 <template>
-  <v-layout>
-    <v-flex class="text-center">
-      <h1>Help</h1>
-    </v-flex>
-  </v-layout>
+  <v-container>
+    <h1>Help</h1>
+  </v-container>
 </template>

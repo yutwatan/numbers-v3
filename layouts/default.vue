@@ -36,13 +36,13 @@
     </v-navigation-drawer>
 
     <v-app-bar :clipped-left="clipped" color="teal darken-1" fixed app dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon class="mr-1" @click.stop="drawer = !drawer" />
       <v-divider vertical></v-divider>
-      <v-toolbar-title v-text="title" class="pl-3" />
+      <v-toolbar-title class="pl-3" v-text="title" />
 
       <v-spacer />
 
-      <v-btn text to="/help">
+      <v-btn text fab height="48" width="48" class="mx-2" to="/help">
         <v-icon>mdi-help</v-icon>
       </v-btn>
       <v-menu v-if="isAuthenticated" offset-y>
@@ -112,6 +112,11 @@ export default {
           icon: 'mdi-numeric-4-box-multiple',
           title: 'Numbers 4',
           to: '/numbers4'
+        },
+        {
+          icon: 'mdi-calendar-month',
+          title: 'Calendar',
+          to: '/calendar'
         },
         {
           icon: 'mdi-help',
