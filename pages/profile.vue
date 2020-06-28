@@ -3,8 +3,17 @@
     <h1>ユーザ情報</h1>
     <v-card class="mx-auto" max-width="400">
       <v-list-item>
-        <v-list-item-avatar size="64">
-          <v-img :src="user.photoURL" :alt="user.displayName"></v-img>
+        <v-list-item-avatar size="64" color="accent">
+          <v-img
+            v-if="user.photoURL"
+            :src="user.photoURL"
+            :alt="user.displayName"
+          ></v-img>
+          <span
+            v-if="!user.photoURL"
+            class="white--text headline"
+            v-text="avatarText"
+          ></span>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title class="headline">{{
@@ -38,7 +47,8 @@ export default {
   name: 'Profile',
   data() {
     return {
-      userInfo: []
+      userInfo: [],
+      avatarText: ''
     };
   },
   computed: {
@@ -49,7 +59,7 @@ export default {
       this.userInfo = [
         {
           title: 'メールアドレス',
-          value: this.user.email
+          value: this.user.providerData[0].email
         },
         {
           title: '確認済みメールアドレス',
@@ -64,6 +74,23 @@ export default {
           value: this.user.providerData[0].uid
         }
       ];
+
+      if (!this.user?.phoneNumber) {
+        this.avatarText = this.getAvatarText(this.user?.displayName);
+      }
+    }
+  },
+  methods: {
+    getAvatarText: (displayName) => {
+      if (displayName.includes(' ')) {
+        const names = displayName.split(' ');
+        const firstNameChars = names[0].split('');
+        const lastNameChars = names[1].split('');
+        return firstNameChars[0] + lastNameChars[0];
+      } else {
+        const nameChars = displayName.split('');
+        return nameChars[0] + nameChars[0];
+      }
     }
   }
 };
