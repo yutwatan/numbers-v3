@@ -17,10 +17,12 @@ export default {
 
         const uiConfig = {
           signInOptions: [
-            authProviders.Email,
             authProviders.Google,
             authProviders.Facebook,
+            authProviders.Twitter,
             authProviders.Github,
+            'yahoo.com',
+            authProviders.Email
             /*
             {
               provider: authProviders.Phone,
@@ -28,22 +30,9 @@ export default {
             },
             */
             // 'apple.com',
-            'yahoo.com'
             // 'microsoft.com'
           ],
-          callbacks: {
-            /*
-            // for CORS error at Nuxt local server (production では不要)
-            signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-              // window.location.href = '/';
-              return true;
-              // return false; // false で signInSuccessUrl にリダイレクトしない
-            }
-            uiShown: () => {
-              document.getElementById('loader').style.display = 'none';
-            }
-             */
-          },
+          callbacks: {},
           // signInFlow: 'popup',
           signInSuccessUrl: '/'
         };
