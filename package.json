@@ -20,7 +20,7 @@
     "nuxt": "^2.0.0",
     "vue": "^2.6.12",
     "vue-template-compiler": "^2.6.12",
-    "vuetify": "^2.2.30"
+    "vuetify": "^2.6.10"
   },
   "devDependencies": {
     "@nuxt/types": "^0.7.9",
